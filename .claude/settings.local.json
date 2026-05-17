@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git config *)",
+      "Bash(git credential *)",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Remove GitHub Actions workflow and Dependabot config *)"
+    ]
+  }
+}
