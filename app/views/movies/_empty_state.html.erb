@@ -1,0 +1,12 @@
+<div class="empty" id="empty-state">
+  <% if filter == "watched" %>
+    <h3>Nothing watched yet.</h3>
+    <p>Click any poster to mark a film as watched.</p>
+  <% elsif filter == "towatch" %>
+    <h3>You've watched everything.</h3>
+    <p>Impressive. Add another film to your list.</p>
+  <% else %>
+    <h3>Your list is empty.</h3>
+    <p>Add your first film, or <%= button_to "load 6 sample films", seed_movies_path, class: "link-button", form: { class: "inline-form" } %> to get a feel for it.</p>
+  <% end %>
+</div>

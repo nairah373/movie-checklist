@@ -1,0 +1,58 @@
+<% content_for :title, "movies. — your personal checklist" %>
+
+<header class="site-header">
+  <a href="<%= root_path %>" class="brand" aria-label="movies — home">
+    movies<span class="dot">.</span>
+  </a>
+  <nav class="top-nav" aria-label="primary">
+    <% if Movie.count.zero? %>
+      <%= button_to seed_movies_path, class: "icon-btn", title: "Load 6 sample films", form: { data: { turbo_confirm: nil } } do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      <% end %>
+    <% else %>
+      <%= button_to clear_movies_path, method: :delete, class: "icon-btn", title: "Clear all films", form: { data: { turbo_confirm: "Wipe your entire list?" } } do %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      <% end %>
+    <% end %>
+    <button class="add-btn" type="button" data-controller="modal" data-action="modal#open">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Add film</span>
+    </button>
+  </nav>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">A quiet corner of the internet</p>
+  <h1>Your <em>cinematic</em><br>checklist.</h1>
+  <p class="hero-sub">Track the films you've already loved. Bookmark the ones you'll get to next. Nothing more, nothing in the way.</p>
+
+  <%= render "stats", counts: @counts %>
+</section>
+
+<%= render "filters", filter: @filter, counts: @counts %>
+
+<main class="grid-wrap">
+  <div class="grid" id="grid">
+    <% if @movies.any? %>
+      <%= render @movies %>
+    <% else %>
+      <%= render "empty_state", filter: @filter %>
+    <% end %>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <blockquote class="quote">
+    "We don't make movies to make money, we make money to make more movies."
+    <span class="quote-author">— Walt Disney</span>
+  </blockquote>
+  <div class="footer-meta">
+    <span>movies.</span>
+    <span class="sep">·</span>
+    <span>a checklist, nothing more</span>
+    <span class="sep">·</span>
+    <span><%= Date.current.year %></span>
+  </div>
+</footer>
+
+<%= render "modal", movie: Movie.new, open: false %>

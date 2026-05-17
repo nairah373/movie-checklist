@@ -1,0 +1,33 @@
+<%= turbo_frame_tag dom_id(movie), class: "card-frame" do %>
+  <article class="card <%= 'watched' if movie.watched %>" id="<%= dom_id(movie) %>">
+    <%= button_to toggle_movie_path(movie),
+                  method: :patch,
+                  class: "poster-button",
+                  form: { class: "poster-form", data: { turbo_frame: "_top" } } do %>
+      <div class="poster <%= 'has-image' if movie.poster_url.present? %>" style="background: linear-gradient(155deg, <%= lighten_color(movie.color) %>, <%= movie.color %>);">
+        <% if movie.poster_url.present? %>
+          <img class="poster-img" src="<%= movie.poster_url %>" alt="<%= movie.title %> poster" referrerpolicy="no-referrer" loading="lazy" onerror="this.remove();">
+        <% end %>
+        <span class="checkbox" aria-label="<%= movie.watched ? 'Watched' : 'Not watched' %>">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </span>
+        <span class="poster-title"><%= movie.title %></span>
+      </div>
+    <% end %>
+    <div class="meta">
+      <div class="title-row">
+        <span class="title"><%= movie.title %></span>
+        <%= button_to movie_path(movie),
+                      method: :delete,
+                      class: "remove-btn",
+                      form: { data: { turbo_confirm: "Remove '#{movie.title}'?" } },
+                      title: "Remove film" do %>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <% end %>
+      </div>
+      <div class="sub">
+        <%= [movie.year, movie.genre].compact_blank.join(" · ").presence || "—" %>
+      </div>
+    </div>
+  </article>
+<% end %>

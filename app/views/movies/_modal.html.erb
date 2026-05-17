@@ -1,0 +1,48 @@
+<div id="modal" class="modal-backdrop <%= 'open' if open %>" data-controller="modal" data-modal-open-value="<%= open %>" data-action="click->modal#backdropClose keydown@window->modal#escape">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 id="modal-title">Add a film</h2>
+    <p class="modal-sub">Drop in a title — the rest is optional.</p>
+
+    <%= form_with model: movie, url: movies_path, data: { turbo: true }, html: { id: "add-form", novalidate: true } do |f| %>
+      <% if movie.errors.any? %>
+        <div class="form-errors">
+          <%= movie.errors.full_messages.to_sentence %>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= f.label :title %>
+        <%= f.text_field :title, placeholder: "In the Mood for Love", autocomplete: "off", required: true, data: { modal_target: "firstField" } %>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <%= f.label :year %>
+          <%= f.text_field :year, placeholder: "2000", inputmode: "numeric", maxlength: 4 %>
+        </div>
+        <div class="field">
+          <%= f.label :genre %>
+          <%= f.text_field :genre, placeholder: "Romance", autocomplete: "off", list: "genre-options" %>
+          <datalist id="genre-options">
+            <% %w[Drama Comedy Action Thriller Romance Sci-Fi Horror Animation Documentary
+                  Crime Fantasy Adventure Mystery Musical Western Noir War Historical
+                  Biographical Experimental].each do |g| %>
+              <option value="<%= g %>"></option>
+            <% end %>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :poster_url, "Poster image URL" %>
+        <%= f.url_field :poster_url, placeholder: "https://images.unsplash.com/…", autocomplete: "off" %>
+        <p class="field-hint">Paste a direct image URL. On Pinterest, right-click the pin and choose "Copy image address".</p>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" data-action="modal#close">Cancel</button>
+        <%= f.submit "Add to list", class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

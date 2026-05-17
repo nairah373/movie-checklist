@@ -1,0 +1,9 @@
+<nav class="filters" id="filters" aria-label="filter list">
+  <% [["all", "All", counts[:total]], ["towatch", "To watch", counts[:towatch]], ["watched", "Watched", counts[:watched]]].each do |key, label, count| %>
+    <%= link_to root_path(filter: (key == "all" ? nil : key)),
+                class: "filter #{'active' if filter == key}",
+                data: { turbo_action: "replace" } do %>
+      <%= label %> <span class="count"><%= count %></span>
+    <% end %>
+  <% end %>
+</nav>
