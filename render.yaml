@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: movie-checklist
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /up
+    autoDeploy: true
+    envVars:
+      # Make Thruster (the built-in web server) listen on the port Render expects.
+      - key: HTTP_PORT
+        value: 10000
+      # Paste the contents of your local config/master.key in the Render dashboard.
+      - key: RAILS_MASTER_KEY
+        sync: false
